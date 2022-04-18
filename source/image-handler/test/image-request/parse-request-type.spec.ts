@@ -102,10 +102,10 @@ describe("parseRequestType", () => {
       imageRequest.parseRequestType(event);
     } catch (error) {
       expect(error).toMatchObject({
-        status: StatusCodes.BAD_REQUEST,
-        code: "RequestTypeError",
+        status: StatusCodes.TRUNCATED_REQUEST,
+        code: "DecodeRequest::CannotDecodeRequest",
         message:
-          "The type of request you are making could not be processed. Please ensure that your original image is of a supported file type (jpg, png, tiff, webp, svg, gif) and that your image request is provided in the correct syntax. Refer to the documentation for additional guidance on forming image requests.",
+          "The image request you provided could not be decoded. Please check that your request is base64 encoded properly and refer to the documentation for additional guidance.",
       });
     }
   });
