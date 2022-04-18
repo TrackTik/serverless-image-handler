@@ -295,6 +295,13 @@ export class ImageRequest {
     if (requestType === RequestTypes.DEFAULT) {
       // Decode the image request and return the image key
       const { key } = this.decodeRequest(event);
+      if (key === undefined) {
+        throw new ImageHandlerError(
+          StatusCodes.BAD_REQUEST,
+          "ImageEdits::CannotFindImage",
+          "The image you specified could not be found. Please check your request syntax as well as the bucket you specified to ensure it exists."
+        );
+      }
       return key;
     }
 
@@ -358,11 +365,13 @@ export class ImageRequest {
 
     // Check if path is base 64 encoded
     let isBase64Encoded = true;
+    let decodeError = null;
     try {
       this.decodeRequest(event);
     } catch (error) {
       console.info("Path is not base64 encoded.");
       isBase64Encoded = false;
+      decodeError = error;
     }
 
     if (matchDefault.test(path) && isBase64Encoded) {
@@ -374,6 +383,9 @@ export class ImageRequest {
     } else if (matchThumbor1.test(path) && (matchThumbor2.test(path) || matchThumbor3.test(path))) {
       // use thumbor mappings
       return RequestTypes.THUMBOR;
+    } else if (decodeError && decodeError.code === "DecodeRequest::CannotDecodeRequest") {
+      // 99% of the time is a truncated base64 encoded URL by Outlook, return the 477 code instead of 400
+      throw decodeError;
     } else {
       throw new ImageHandlerError(
         StatusCodes.BAD_REQUEST,
@@ -416,7 +428,7 @@ export class ImageRequest {
         return JSON.parse(toBuffer.toString());
       } catch (error) {
         throw new ImageHandlerError(
-          StatusCodes.BAD_REQUEST,
+          StatusCodes.TRUNCATED_REQUEST, // 99% of the time is because of a truncated base64 encoded string by Outlook!
           "DecodeRequest::CannotDecodeRequest",
           "The image request you provided could not be decoded. Please check that your request is base64 encoded properly and refer to the documentation for additional guidance."
         );
