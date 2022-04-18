@@ -25,7 +25,21 @@ import { SecretProvider } from "./secret-provider";
 import { Context } from "aws-lambda";
 
 const awsSdkOptions = getOptions();
-const s3Client = new S3(awsSdkOptions);
+const s3Client = new S3({
+  ...awsSdkOptions,
+  maxRetries: 3,
+  retryDelayOptions: {
+    customBackoff: (retryCount) => {
+      const wait = 2 ** retryCount * 100;
+      console.log(`retry count: ${retryCount}, waiting: ${wait}ms`);
+      return wait; // in milliseconds
+    },
+  },
+  httpOptions: {
+    connectTimeout: 1000, // in milliseconds
+    timeout: 5000, // in milliseconds
+  },
+});
 const rekognitionClient = new Rekognition(awsSdkOptions);
 const secretsManagerClient = new SecretsManager(awsSdkOptions);
 const secretProvider = new SecretProvider(secretsManagerClient);
