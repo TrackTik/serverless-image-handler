@@ -941,7 +941,7 @@ describe('getOverlayImage()', () => {
 
       // Assert
       expect(mockAwsS3.getObject).toHaveBeenCalledWith({ Bucket: 'validBucket', Key: 'validKey' });
-      expect(result).toEqual(Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACXBIWXMAAAsTAAALEwEAmpwYAAAADUlEQVQI12P4z8CQCgAEZgFlTg0nBwAAAABJRU5ErkJggg==', 'base64'));
+      expect(result).toEqual(Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACXBIWXMAAAsTAAALEwEAmpwYAAAADUlEQVQImWP4z8CQCgAEZgFll19D6QAAAABJRU5ErkJggg==', 'base64'));
     });
 
     it('Should pass and do not throw an exception that the overlay image dimensions are not integer numbers', async () => {
