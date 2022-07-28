@@ -18,8 +18,9 @@ const s3Client = new S3({
   maxRetries: 3,
   retryDelayOptions: {
     customBackoff: retryCount => {
-      console.log(`retry count: ${retryCount}, waiting: 100ms`)
-      return 100 * retryCount // in milliseconds
+      const wait = 2**retryCount * 100
+      console.log(`retry count: ${retryCount}, waiting: ${wait}ms`)
+      return wait // in milliseconds
     }
   },
   httpOptions: {
