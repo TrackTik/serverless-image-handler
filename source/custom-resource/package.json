@@ -19,7 +19,7 @@
     "solution-utils:package": "cd ../solution-utils && npm run package && cd dist/ && rsync -avrq . ../../$npm_package_name/dist/solution-utils/ && cd ../../$npm_package_name"
   },
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": "^0.27.2",
     "moment": "^2.29.1",
     "uuid": "^8.3.0"
   },
