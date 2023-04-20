@@ -325,7 +325,7 @@ export class ImageRequest {
     const { path } = event;
     const matchDefault = /^(\/?)([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/;
     const matchThumbor =
-      /^(\/?)((fit-in)?|(filters:.+\(.?\))?|(unsafe)?)(((.(?!(\.[^.\\/]+$)))*$)|.*(\.jpg$|\.jpeg$|.\.png$|\.webp$|\.tiff$|\.tif$|\.svg$|\.gif$))/i;
+      /^(\/?)((fit-in)?|(filters:.+\(.?\))?|(unsafe)?).*(\.jpg$|\.jpeg$|.\.png$|\.webp$|\.tiff$|\.tif$|\.svg$|\.gif$)/i;
     const { REWRITE_MATCH_PATTERN, REWRITE_SUBSTITUTION } = process.env;
     const definedEnvironmentVariables =
       REWRITE_MATCH_PATTERN !== "" &&
