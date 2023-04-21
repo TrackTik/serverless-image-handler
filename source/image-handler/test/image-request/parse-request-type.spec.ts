@@ -109,4 +109,27 @@ describe("parseRequestType", () => {
       });
     }
   });
+
+  it("Should throw an error if the request is a truncated base64", () => {
+    // Arrange
+    const event = { path: "ewogICJidWNrZXQiOiAidHQtb3JpZ2luYWwtaW1hZ2UtYnVja2V0IiwKICAia2V5" };
+
+    process.env = {};
+
+    // Act
+    const imageRequest = new ImageRequest(s3Client, secretProvider);
+
+    // Assert
+    try {
+      imageRequest.parseRequestType(event);
+    } catch (error) {
+      expect(consoleInfoSpy).toHaveBeenCalledWith("Path is not base64 encoded.");
+      expect(error).toMatchObject({
+        status: StatusCodes.TRUNCATED_REQUEST,
+        code: "DecodeRequest::CannotDecodeRequest",
+        message:
+          "The image request you provided could not be decoded. Please check that your request is base64 encoded properly and refer to the documentation for additional guidance.",
+      });
+    }
+  });
 });
