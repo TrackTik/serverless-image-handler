@@ -8,6 +8,9 @@ import path from "path";
 // Is used by build system to build a clean npm package with the compiled js files in the root of the package.
 // It will not be included in the npm package.
 
+/**
+ *
+ */
 function main() {
   const source = fs.readFileSync(path.join(__dirname, "/../../package.json")).toString("utf-8");
   const sourceObj = JSON.parse(source);
