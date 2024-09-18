@@ -31,7 +31,7 @@ prepare_jest_coverage_report() {
 }
 
 # container tests need permission to pull amazon linux base image
-aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
+# aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
 
 headline "[Setup] Configure paths"
 template_dir="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
