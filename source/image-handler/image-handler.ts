@@ -192,7 +192,7 @@ export class ImageHandler {
         }
         case "rotate": {
           // Handle rotate specifically to support autoOrient when undefined
-          if (edits.rotate === undefined) {
+          if (edits.rotate === undefined || edits.rotate === null || edits.rotate === 'autoOrient') {
             // When rotate is undefined (filters:rotate() without parameters), call autoOrient()
             // This aligns with Sharp's behavior where rotate() without parameters auto-orients based on EXIF
             originalImage.autoOrient();
