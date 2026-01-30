@@ -103,4 +103,54 @@ describe("rotate", () => {
     // Clean up
     autoOrientSpy.mockRestore();
   });
+
+  it("Should call autoOrient when rotate is null (filters:rotate() without parameters)", async () => {
+    // Arrange
+    const originalImage = fs.readFileSync("./test/image/1x1.jpg");
+    const request: ImageRequestInfo = {
+      requestType: RequestTypes.DEFAULT,
+      bucket: "sample-bucket",
+      key: "test.jpg",
+      edits: { rotate: null },
+      originalImage,
+    };
+
+    // Create a spy on Sharp's autoOrient method
+    const autoOrientSpy = jest.spyOn(sharp.prototype, "autoOrient");
+
+    // Act
+    const imageHandler = new ImageHandler(s3Client, rekognitionClient);
+    await imageHandler.process(request);
+
+    // Assert
+    expect(autoOrientSpy).toHaveBeenCalled();
+
+    // Clean up
+    autoOrientSpy.mockRestore();
+  });
+
+  it("Should call autoOrient when rotate is 'autoOrient' (filters:rotate() without parameters)", async () => {
+    // Arrange
+    const originalImage = fs.readFileSync("./test/image/1x1.jpg");
+    const request: ImageRequestInfo = {
+      requestType: RequestTypes.DEFAULT,
+      bucket: "sample-bucket",
+      key: "test.jpg",
+      edits: { rotate: "autoOrient" },
+      originalImage,
+    };
+
+    // Create a spy on Sharp's autoOrient method
+    const autoOrientSpy = jest.spyOn(sharp.prototype, "autoOrient");
+
+    // Act
+    const imageHandler = new ImageHandler(s3Client, rekognitionClient);
+    await imageHandler.process(request);
+
+    // Assert
+    expect(autoOrientSpy).toHaveBeenCalled();
+
+    // Clean up
+    autoOrientSpy.mockRestore();
+  });
 });
